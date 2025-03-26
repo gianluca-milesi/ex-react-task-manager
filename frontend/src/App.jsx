@@ -25,9 +25,7 @@ function App() {
         throw new Error("Errore nel recupero dei dati")
       }
       const tasksData = await response.json()
-
       setTasks(tasksData)
-      console.log(tasksData)
     } catch (err) {
       console.error(err)
     }
@@ -39,7 +37,7 @@ function App() {
 
 
   return (
-    <GlobalContext.Provider value={{}}>
+    <GlobalContext.Provider value={{ tasks }}>
       <BrowserRouter>
         <Routes>
           <Route element={<DefaultLayout />}>

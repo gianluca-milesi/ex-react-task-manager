@@ -1,3 +1,6 @@
+/* Tailwind */
+@import "tailwindcss";
+
 /* RESET */
 * {
   margin: 0;
