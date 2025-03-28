@@ -9,7 +9,6 @@ import TaskRow from "../components/TaskRow.jsx"
 function TaskList() {
 
     const { tasks } = useContext(GlobalContext)
-    console.log(tasks)
 
 
     return (

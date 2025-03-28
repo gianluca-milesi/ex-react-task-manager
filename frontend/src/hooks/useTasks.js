@@ -45,14 +45,20 @@ function useTasks() {
         setTasks(prev => prev.filter(t => t.id !== taskId))
     }
 
-    function updateTask() {
+    async function updateTask(updatedTask) {
+        const response = await fetch(`${apiUrl}/tasks/${updatedTask.id}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(updatedTask)
+        })
+        const { success, message, task } = await response.json()
+        if (!success) throw new Error(message)
 
+        setTasks(prev => prev.map(t => t.id === updatedTask.id ? task : t))
     }
 
 
     return { tasks, setTasks, addTask, removeTask, updateTask }
-
-
 }
 
 export default useTasks

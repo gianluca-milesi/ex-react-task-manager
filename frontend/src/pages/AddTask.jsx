@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom"
 import { useState, useRef, useMemo, useContext } from "react"
 import GlobalContext from "../contexts/GlobalContext"
 
@@ -7,6 +8,7 @@ const symbols = "!@#$%^&*()-_=+[]{}|;:'\",.<>?/`~"
 function AddTask() {
 
     const { addTask } = useContext(GlobalContext)
+    const navigate = useNavigate()
 
     const [title, setTitle] = useState("")
     const descriptionRef = useRef()
@@ -44,6 +46,7 @@ function AddTask() {
                 console.error(err)
                 alert(err.message)
             }
+            navigate("/")
         }
     }
 
@@ -66,7 +69,7 @@ function AddTask() {
                     </div>
                     <div className="flex flex-col">
                         <label htmlFor="description">Descrizione</label>
-                        <textarea type="text"
+                        <textarea
                             name="description"
                             id="description"
                             className="p-2 shadow-md"

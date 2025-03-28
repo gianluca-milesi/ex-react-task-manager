@@ -19,7 +19,7 @@ function App() {
 
 
   return (
-    <GlobalContext.Provider value={{ tasks, setTasks, addTask, removeTask }}>
+    <GlobalContext.Provider value={{ tasks, setTasks, addTask, removeTask, updateTask }}>
       <BrowserRouter>
         <Routes>
           <Route element={<DefaultLayout />}>
