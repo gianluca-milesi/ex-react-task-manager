@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom"
+import { useParams, useNavigate } from "react-router-dom"
 import GlobalContext from "../contexts/GlobalContext"
 import { useContext } from "react"
 
@@ -6,6 +6,7 @@ import { useContext } from "react"
 function TaskDetail() {
 
     const { id } = useParams()
+    const navigate = useNavigate()
     const { tasks, removeTask } = useContext(GlobalContext)
 
     const task = tasks.find(t => t.id === parseInt(id))
@@ -14,6 +15,17 @@ function TaskDetail() {
         "To do": "text-red-500",
         "Doing": "text-yellow-500",
         "Done": "text-green-500"
+    }
+
+    async function handleDelete() {
+        try {
+            await removeTask(task.id)
+            alert("Task rimossa con successo")
+
+            navigate("/")
+        } catch (err) {
+            alert(err.message)
+        }
     }
 
 
@@ -29,7 +41,7 @@ function TaskDetail() {
                         <p><strong>Data di creazione: </strong>{new Date(task.createdAt).toLocaleDateString()}</p>
                         <button
                             className="self-center cursor-pointer bg-red-500 py-1 px-3 rounded"
-                            onClick={removeTask}>Elimina</button>
+                            onClick={handleDelete}>Elimina</button>
                     </div>
                 }
             </div>

@@ -32,11 +32,17 @@ function useTasks() {
         const { success, message, task } = await response.json()
         if (!success) throw new Error(message)
 
-        setTasks([...tasks, newTask])
+        setTasks([...tasks, task])
     }
 
-    function removeTask(taskId) {
+    async function removeTask(taskId) {
+        const response = await fetch(`${apiUrl}/tasks/${taskId}`, {
+            method: "DELETE"
+        })
+        const { success, message } = await response.json()
+        if (!success) throw new Error(message)
 
+        setTasks(prev => prev.filter(t => t.id !== taskId))
     }
 
     function updateTask() {
