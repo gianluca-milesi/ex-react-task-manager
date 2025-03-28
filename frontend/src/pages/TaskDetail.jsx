@@ -1,6 +1,7 @@
 import { useParams, useNavigate } from "react-router-dom"
 import GlobalContext from "../contexts/GlobalContext"
-import { useContext } from "react"
+import { useContext, useState } from "react"
+import Modal from "../components/Modal.jsx"
 
 
 function TaskDetail() {
@@ -10,12 +11,13 @@ function TaskDetail() {
     const { tasks, removeTask } = useContext(GlobalContext)
 
     const task = tasks.find(t => t.id === parseInt(id))
-
     const statusColors = {
         "To do": "text-red-500",
         "Doing": "text-yellow-500",
         "Done": "text-green-500"
     }
+
+    const [show, setShow] = useState(false)
 
     async function handleDelete() {
         try {
@@ -40,12 +42,23 @@ function TaskDetail() {
                         <p><strong>Stato: </strong><span className={`${statusColors[task.status]}`}>{task.status}</span></p>
                         <p><strong>Data di creazione: </strong>{new Date(task.createdAt).toLocaleDateString()}</p>
                         <button
-                            className="self-center cursor-pointer bg-red-500 py-1 px-3 rounded"
-                            onClick={handleDelete}>Elimina</button>
+                            className="self-center px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 cursor-pointer"
+                            onClick={() => setShow(true)}
+                        >
+                            Elimina
+                        </button>
+                        <Modal
+                            title="Conferma eliminazione"
+                            content="Sei sicuro di voler eliminare questa task?"
+                            show={show}
+                            onClose={() => setShow(false)}
+                            onConfirm={handleDelete}
+                            confirmText="Conferma"
+                        />
                     </div>
                 }
             </div>
-        </section>
+        </section >
     )
 }
 
