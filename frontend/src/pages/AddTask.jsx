@@ -1,4 +1,4 @@
-import { useState, useRef } from "react"
+import { useState, useRef, useMemo } from "react"
 
 const symbols = "!@#$%^&*()-_=+[]{}|;:'\",.<>?/`~"
 
@@ -9,61 +9,69 @@ function AddTask() {
     const descriptionRef = useRef()
     const statusRef = useRef()
 
+    const validateTitle = useMemo(() => {
+        if (!title) {
+            return "Il campo non può essere vuoto"
+        }
+        if ([...title].some(char => symbols.includes(char))) {
+            return "Non può contenere simboli"
+        }
+    })
+
     function addTask(e) {
         e.preventDefault()
 
         const description = descriptionRef.current.value
         const status = statusRef.current.value
 
-        if (!title) {
-            alert("Inserisci un nome")
-            return
-        }
-        if (title.split("").some(char => symbols.includes(char))) {
-            alert("Non puoi inserire simboli")
-            return
+        if (validateTitle) {
+            return alert("Inserire i dati correttamente")
+        } else {
+            console.log("Dati inviati:", {
+                title,
+                description,
+                status
+            })
         }
 
-        console.log("Dati inviati:", {
-            title,
-            description,
-            status
-        })
     }
 
 
     return (
         <section>
-            <h1>Aggiungi una Task</h1>
-            <div className="container">
-                <form onSubmit={addTask}>
-                    <div className="form-control">
+            <h1 className="text-4xl text-center mb-5">Aggiungi una Task</h1>
+            <div className="container flex flex-col justify-center items-center">
+                <form onSubmit={addTask} className="flex flex-col w-75 gap-2 rounded-lg shadow-md py-3 px-5">
+                    <div className="flex flex-col">
                         <label htmlFor="title">Nome task</label>
                         <input type="text"
                             name="title"
                             id="title"
+                            className="p-2 shadow-md"
                             placeholder="Inserisci nome..."
                             value={title}
                             onChange={e => setTitle(e.target.value)} />
+                        {validateTitle && <span style={{ color: "red" }}>{validateTitle}</span>}
                     </div>
-                    <div className="form-control">
+                    <div className="flex flex-col">
                         <label htmlFor="description">Descrizione</label>
-                        <input type="text"
+                        <textarea type="text"
                             name="description"
                             id="description"
+                            className="p-2 shadow-md"
                             placeholder="Inserisci una descrizione..."
                             ref={descriptionRef}
                         />
                     </div>
-                    <div className="form-control">
+                    <div className="flex justify-center items-center gap-2">
                         <label htmlFor="status">Stato</label>
-                        <select ref={statusRef}>
+                        <select className="p-1" ref={statusRef}>
                             <option value="To do">To do</option>
                             <option value="Doing">Doing</option>
                             <option value="Done">Done</option>
                         </select>
                     </div>
-                    <button type="submit">Invio</button>
+                    <button className="self-center bg-sky-600 text-white py-1 px-3 rounded" type="submit">Invio</button>
                 </form>
             </div>
         </section>
