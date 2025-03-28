@@ -1,6 +1,8 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom"
 //Contexts
 import GlobalContext from "./contexts/GlobalContext.js"
+//Hooks
+import { useEffect, useState } from "react"
 //Layouts
 import DefaultLayout from "./layouts/DefaultLayout.jsx"
 import BlankLayout from "./layouts/BlankLayout.jsx"
@@ -8,8 +10,6 @@ import BlankLayout from "./layouts/BlankLayout.jsx"
 import TaskList from "./pages/TaskList.jsx"
 import AddTask from "./pages/AddTask.jsx"
 import NotFound from "./pages/NotFound.jsx"
-//Hooks
-import { useEffect, useState } from "react"
 //Environment variables
 const apiUrl = import.meta.env.VITE_API_URL
 
