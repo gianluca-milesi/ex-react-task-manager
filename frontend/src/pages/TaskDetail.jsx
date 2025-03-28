@@ -1,6 +1,7 @@
 import { useParams, useNavigate } from "react-router-dom"
 import GlobalContext from "../contexts/GlobalContext"
 import { useContext, useState } from "react"
+import BackButton from "../components/BackButton.jsx"
 import Modal from "../components/Modal.jsx"
 import EditTaskModal from "../components/EditTaskModal.jsx"
 
@@ -51,6 +52,7 @@ function TaskDetail() {
     return (
         <>
             <section className="mt-4">
+                <BackButton />
                 <h1 className="text-4xl text-center mb-5">Dettaglio Task</h1>
                 <div className="container flex flex-col justify-center items-center">
                     {task &&

@@ -1,6 +1,6 @@
-import { useNavigate } from "react-router-dom"
 import { useState, useRef, useMemo, useContext } from "react"
 import GlobalContext from "../contexts/GlobalContext"
+import BackButton from "../components/BackButton"
 
 const symbols = "!@#$%^&*()-_=+[]{}|;:'\",.<>?/`~"
 
@@ -8,7 +8,6 @@ const symbols = "!@#$%^&*()-_=+[]{}|;:'\",.<>?/`~"
 function AddTask() {
 
     const { addTask } = useContext(GlobalContext)
-    const navigate = useNavigate()
 
     const [title, setTitle] = useState("")
     const descriptionRef = useRef()
@@ -46,13 +45,13 @@ function AddTask() {
                 console.error(err)
                 alert(err.message)
             }
-            navigate("/")
         }
     }
 
 
     return (
         <section className="mt-4">
+            <BackButton />
             <h1 className="text-4xl text-center mb-5">Aggiungi una Task</h1>
             <div className="container flex flex-col justify-center items-center">
                 <form onSubmit={handleSubmit} className="flex flex-col w-75 gap-2 rounded-lg shadow-md py-3 px-5">
@@ -85,7 +84,7 @@ function AddTask() {
                             <option value="Done">Done</option>
                         </select>
                     </div>
-                    <button className="self-center bg-sky-600 text-white py-1 px-3 rounded" type="submit">Invio</button>
+                    <button className="self-center bg-sky-600 text-white py-1 px-3 rounded cursor-pointer" type="submit">Invio</button>
                 </form>
             </div>
         </section>
