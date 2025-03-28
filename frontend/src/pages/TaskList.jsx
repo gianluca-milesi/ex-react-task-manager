@@ -13,22 +13,24 @@ function TaskList() {
 
 
     return (
-        <section>
-            <h1>Lista dei Task</h1>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Nome</th>
-                        <th>Stato</th>
-                        <th>Data di creazione</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {tasks && tasks.map(t => (
-                        <TaskRow key={t.id} title={t.title} status={t.status} createdAt={t.createdAt} />
-                    ))}
-                </tbody>
-            </table>
+        <section className="mt-4">
+            <h1 className="text-4xl text-center mb-5">Lista dei Task</h1>
+            <div className="container flex flex-col justify-center items-center">
+                <table className="rounded-lg shadow-md">
+                    <thead>
+                        <tr>
+                            <th className="p-3 text-left">Nome</th>
+                            <th className="p-3 text-left">Stato</th>
+                            <th className="p-3 text-left">Data di creazione</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {tasks && tasks.map(t => (
+                            <TaskRow key={t.id} title={t.title} status={t.status} createdAt={t.createdAt} />
+                        ))}
+                    </tbody>
+                </table>
+            </div>
         </section>
     )
 }
