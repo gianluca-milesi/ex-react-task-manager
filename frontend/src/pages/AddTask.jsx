@@ -1,9 +1,12 @@
-import { useState, useRef, useMemo } from "react"
+import { useState, useRef, useMemo, useContext } from "react"
+import GlobalContext from "../contexts/GlobalContext"
 
 const symbols = "!@#$%^&*()-_=+[]{}|;:'\",.<>?/`~"
 
 
 function AddTask() {
+
+    const { addTask } = useContext(GlobalContext)
 
     const [title, setTitle] = useState("")
     const descriptionRef = useRef()
@@ -18,22 +21,30 @@ function AddTask() {
         }
     })
 
-    function addTask(e) {
+    async function handleSubmit(e) {
         e.preventDefault()
-
-        const description = descriptionRef.current.value
-        const status = statusRef.current.value
 
         if (validateTitle) {
             return alert("Inserire i dati correttamente")
         } else {
-            console.log("Dati inviati:", {
-                title,
-                description,
-                status
-            })
-        }
+            const newTask = {
+                title: title.trim(),
+                description: descriptionRef.current.value,
+                status: statusRef.current.value
+            }
 
+            try {
+                await addTask(newTask)
+                alert("Task creata con successo")
+
+                setTitle("")
+                descriptionRef.current.value = ""
+                statusRef.current.value = ""
+            } catch (err) {
+                console.error(err)
+                alert(err.message)
+            }
+        }
     }
 
 
@@ -41,7 +52,7 @@ function AddTask() {
         <section>
             <h1 className="text-4xl text-center mb-5">Aggiungi una Task</h1>
             <div className="container flex flex-col justify-center items-center">
-                <form onSubmit={addTask} className="flex flex-col w-75 gap-2 rounded-lg shadow-md py-3 px-5">
+                <form onSubmit={handleSubmit} className="flex flex-col w-75 gap-2 rounded-lg shadow-md py-3 px-5">
                     <div className="flex flex-col">
                         <label htmlFor="title">Nome task</label>
                         <input type="text"

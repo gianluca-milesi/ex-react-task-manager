@@ -23,8 +23,16 @@ function useTasks() {
         fetchTasks()
     }, [])
 
-    function addTask(newTask) {
+    async function addTask(newTask) {
+        const response = await fetch(`${apiUrl}/tasks`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(newTask)
+        })
+        const { success, message, task } = await response.json()
+        if (!success) throw new Error(message)
 
+        setTasks([...tasks, newTask])
     }
 
     function removeTask(taskId) {
@@ -36,7 +44,7 @@ function useTasks() {
     }
 
 
-    return { tasks, addTask, removeTask, updateTask }
+    return { tasks, setTasks, addTask, removeTask, updateTask }
 
 
 }

@@ -10,17 +10,15 @@ import BlankLayout from "./layouts/BlankLayout.jsx"
 import TaskList from "./pages/TaskList.jsx"
 import AddTask from "./pages/AddTask.jsx"
 import NotFound from "./pages/NotFound.jsx"
-//Environment variables
-const apiUrl = import.meta.env.VITE_API_URL
 
 
 function App() {
 
-  const taskData = useTasks()
+  const { tasks, setTasks, addTask, removeTask, updateTask } = useTasks()
 
 
   return (
-    <GlobalContext.Provider value={{ ...taskData }}>
+    <GlobalContext.Provider value={{ tasks, setTasks, addTask }}>
       <BrowserRouter>
         <Routes>
           <Route element={<DefaultLayout />}>
