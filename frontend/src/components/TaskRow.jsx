@@ -14,7 +14,7 @@ function TaskRow({ title = "", status = "", createdAt = "" }) {
         <tr>
             <td className="p-3">{title}</td>
             <td className={`p-3 text-center ${statusColors[status]}`}>{status}</td>
-            <td className="p-3">{createdAt}</td>
+            <td className="p-3">{new Date(createdAt).toLocaleDateString()}</td>
         </tr>
     )
 }

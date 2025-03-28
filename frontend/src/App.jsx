@@ -2,7 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom"
 //Contexts
 import GlobalContext from "./contexts/GlobalContext.js"
 //Hooks
-import { useEffect, useState } from "react"
+import useTasks from "./hooks/useTasks.js"
 //Layouts
 import DefaultLayout from "./layouts/DefaultLayout.jsx"
 import BlankLayout from "./layouts/BlankLayout.jsx"
@@ -16,28 +16,11 @@ const apiUrl = import.meta.env.VITE_API_URL
 
 function App() {
 
-  const [tasks, setTasks] = useState([])
-
-  async function fetchTasks() {
-    try {
-      const response = await fetch(`${apiUrl}/tasks`)
-      if (!response.ok) {
-        throw new Error("Errore nel recupero dei dati")
-      }
-      const tasksData = await response.json()
-      setTasks(tasksData)
-    } catch (err) {
-      console.error(err)
-    }
-  }
-
-  useEffect(() => {
-    fetchTasks()
-  }, [])
+  const taskData = useTasks()
 
 
   return (
-    <GlobalContext.Provider value={{ tasks }}>
+    <GlobalContext.Provider value={{ ...taskData }}>
       <BrowserRouter>
         <Routes>
           <Route element={<DefaultLayout />}>

@@ -26,7 +26,11 @@ function TaskList() {
                     </thead>
                     <tbody>
                         {tasks && tasks.map(t => (
-                            <TaskRow key={t.id} title={t.title} status={t.status} createdAt={t.createdAt} />
+                            <TaskRow
+                                key={t.id}
+                                title={t.title}
+                                status={t.status}
+                                createdAt={t.createdAt} />
                         ))}
                     </tbody>
                 </table>
