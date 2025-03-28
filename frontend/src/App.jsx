@@ -9,6 +9,7 @@ import BlankLayout from "./layouts/BlankLayout.jsx"
 //Pages
 import TaskList from "./pages/TaskList.jsx"
 import AddTask from "./pages/AddTask.jsx"
+import TaskDetail from "./pages/TaskDetail.jsx"
 import NotFound from "./pages/NotFound.jsx"
 
 
@@ -18,12 +19,13 @@ function App() {
 
 
   return (
-    <GlobalContext.Provider value={{ tasks, setTasks, addTask }}>
+    <GlobalContext.Provider value={{ tasks, setTasks, addTask, removeTask }}>
       <BrowserRouter>
         <Routes>
           <Route element={<DefaultLayout />}>
             <Route path="/" element={<TaskList />} />
             <Route path="/add" element={<AddTask />} />
+            <Route path="/task/:id" element={<TaskDetail />} />
           </Route>
           <Route element={<BlankLayout />}>
             <Route path="*" element={<NotFound />} />

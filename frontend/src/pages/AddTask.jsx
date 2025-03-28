@@ -49,7 +49,7 @@ function AddTask() {
 
 
     return (
-        <section>
+        <section className="mt-4">
             <h1 className="text-4xl text-center mb-5">Aggiungi una Task</h1>
             <div className="container flex flex-col justify-center items-center">
                 <form onSubmit={handleSubmit} className="flex flex-col w-75 gap-2 rounded-lg shadow-md py-3 px-5">

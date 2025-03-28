@@ -28,6 +28,7 @@ function TaskList() {
                         {tasks && tasks.map((t, i) => (
                             <TaskRow
                                 key={i}
+                                id={t.id}
                                 title={t.title}
                                 status={t.status}
                                 createdAt={t.createdAt} />
