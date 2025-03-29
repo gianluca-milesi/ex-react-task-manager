@@ -59,6 +59,15 @@ function TaskList() {
             })
     }, [tasks, sortBy, sortOrder, query])
 
+    const [selectedTaskIds, setSelectedTaskIds] = useState([])
+    function toggleSelection(taskId) {
+        if (selectedTaskIds.includes(taskId)) {
+            setSelectedTaskIds(prev => prev.filter(id => id !== taskId))
+        } else {
+            setSelectedTaskIds(prev => [...prev, taskId])
+        }
+    }
+
 
     return (
         <section className="mt-4">
@@ -72,6 +81,7 @@ function TaskList() {
                 <table className="rounded-lg shadow-md">
                     <thead>
                         <tr>
+                            <th className="p-3"></th>
                             <th
                                 className="p-3 text-left"
                                 onClick={() => handleSort("title")}
@@ -99,7 +109,10 @@ function TaskList() {
                                 id={t.id}
                                 title={t.title}
                                 status={t.status}
-                                createdAt={t.createdAt} />
+                                createdAt={t.createdAt}
+                                checked={selectedTaskIds.includes(t.id)}
+                                onToggle={toggleSelection}
+                            />
                         ))}
                     </tbody>
                 </table>

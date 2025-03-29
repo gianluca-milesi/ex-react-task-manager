@@ -2,7 +2,7 @@ import { Link } from "react-router-dom"
 import { memo } from "react"
 
 
-function TaskRow({ id = new Date(), title = "", status = "", createdAt = "" }) {
+function TaskRow({ id = new Date(), title = "", status = "", createdAt = "", checked, onToggle }) {
 
     const statusColors = {
         "To do": "bg-red-500 text-white",
@@ -14,6 +14,13 @@ function TaskRow({ id = new Date(), title = "", status = "", createdAt = "" }) {
     return (
 
         <tr>
+            <td className="p-3">
+                <input
+                    type="checkbox"
+                    checked={checked}
+                    onChange={() => onToggle(id)}
+                />
+            </td>
             <td className="p-3">
                 <Link to={`/task/${id}`}>
                     {title}
