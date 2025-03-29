@@ -1,7 +1,7 @@
 //Contexts
 import GlobalContext from "../contexts/GlobalContext"
 //Hooks
-import { useContext } from "react"
+import { useContext, useMemo, useState } from "react"
 //Components
 import TaskRow from "../components/TaskRow.jsx"
 
@@ -9,6 +9,41 @@ import TaskRow from "../components/TaskRow.jsx"
 function TaskList() {
 
     const { tasks } = useContext(GlobalContext)
+    const [sortBy, setSortBy] = useState("createdAt")
+    const [sortOrder, setSortOrder] = useState(1)
+
+    function handleSort(field) {
+        if (sortBy === field) {
+            setSortOrder(prev => prev * -1)
+        } else {
+            setSortBy(field)
+            setSortOrder(1)
+        }
+    }
+
+    const sortIcon = sortOrder === 1 ? "↓" : "↑"
+
+    const sortedTask = useMemo(() => {
+        return [...tasks].sort((a, b) => {
+            let comparison
+
+            if (sortBy === "title") {
+                comparison = a.title.localeCompare(b.title)
+            }
+            if (sortBy === "status") {
+                const options = ["To do", "Doing", "Done"]
+                const indexA = options.indexOf(a.status)
+                const indexB = options.indexOf(b.status)
+                comparison = indexA - indexB
+            }
+            if (sortBy === "createdAt") {
+                const dateA = new Date(a.createdAt).getTime()
+                const dateB = new Date(b.createdAt).getTime()
+                comparison = dateA - dateB
+            }
+            return comparison * sortOrder
+        })
+    }, [tasks, sortBy, sortOrder])
 
 
     return (
@@ -18,13 +53,28 @@ function TaskList() {
                 <table className="rounded-lg shadow-md">
                     <thead>
                         <tr>
-                            <th className="p-3 text-left">Nome</th>
-                            <th className="p-3 text-left">Stato</th>
-                            <th className="p-3 text-left">Data di creazione</th>
+                            <th
+                                className="p-3 text-left"
+                                onClick={() => handleSort("title")}
+                            >
+                                Nome {sortBy === "title" && sortIcon}
+                            </th>
+                            <th
+                                className="p-3 text-left"
+                                onClick={() => handleSort("status")}
+                            >
+                                Stato {sortBy === "status" && sortIcon}
+                            </th>
+                            <th
+                                className="p-3 text-left"
+                                onClick={() => handleSort("createdAt")}
+                            >
+                                Data di creazione {sortBy === "createdAt" && sortIcon}
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
-                        {tasks && tasks.map((t, i) => (
+                        {tasks && sortedTask.map((t, i) => (
                             <TaskRow
                                 key={i}
                                 id={t.id}
