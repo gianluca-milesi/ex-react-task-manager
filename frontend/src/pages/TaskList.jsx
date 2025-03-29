@@ -18,7 +18,7 @@ function debounce(callback, delay) {
 
 function TaskList() {
 
-    const { tasks } = useContext(GlobalContext)
+    const { tasks, removeMultipleTasks } = useContext(GlobalContext)
     const [sortBy, setSortBy] = useState("createdAt")
     const [sortOrder, setSortOrder] = useState(1)
     const [query, setQuery] = useState("")
@@ -68,6 +68,18 @@ function TaskList() {
         }
     }
 
+    async function handleDeleteSelected() {
+        try {
+            await removeMultipleTasks(selectedTaskIds)
+            alert(selectedTaskIds.length === 1 ? "Task eliminata con successo" : `Tasks ${selectedTaskIds.join(", ")} eliminate con successo`)
+            setSelectedTaskIds([])
+        } catch (err) {
+            console.error(err)
+            alert(err.message)
+        }
+    }
+
+
 
     return (
         <section className="mt-4">
@@ -116,6 +128,14 @@ function TaskList() {
                         ))}
                     </tbody>
                 </table>
+                {selectedTaskIds.length > 0 && (
+                    <button
+                        className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 cursor-pointer mt-6"
+                        onClick={handleDeleteSelected}
+                    >
+                        Elimina Selezionate
+                    </button>
+                )}
             </div>
         </section>
     )

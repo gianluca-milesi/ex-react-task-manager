@@ -15,11 +15,11 @@ import NotFound from "./pages/NotFound.jsx"
 
 function App() {
 
-  const { tasks, setTasks, addTask, removeTask, updateTask } = useTasks()
+  const { tasks, setTasks, addTask, removeTask, removeMultipleTasks, updateTask } = useTasks()
 
 
   return (
-    <GlobalContext.Provider value={{ tasks, setTasks, addTask, removeTask, updateTask }}>
+    <GlobalContext.Provider value={{ tasks, setTasks, addTask, removeTask, removeMultipleTasks, updateTask }}>
       <BrowserRouter>
         <Routes>
           <Route element={<DefaultLayout />}>

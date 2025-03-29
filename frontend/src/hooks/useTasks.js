@@ -45,6 +45,32 @@ function useTasks() {
         setTasks(prev => prev.filter(t => t.id !== taskId))
     }
 
+    async function removeMultipleTasks(taskIds) {
+        const deleteRequests = taskIds.map(taskId =>
+            fetch(`${apiUrl}/tasks/${taskId}`, { method: "DELETE" }).then(res => res.json())
+        )
+
+        const results = await Promise.allSettled(deleteRequests)
+
+        const fulfilledDeletions = []
+        const rejectedDeletions = []
+
+        results.forEach((r, i) => {
+            const taskId = taskIds[i]
+            if (r.status === "fulfilled" && r.value.success) {
+                fulfilledDeletions.push(taskId)
+            } else {
+                rejectedDeletions.push(taskId)
+            }
+        })
+        if (fulfilledDeletions.length > 0) {
+            setTasks(prev => prev.filter(t => !fulfilledDeletions.includes(t.id)))
+        }
+        if (rejectedDeletions.length > 0) {
+            throw new Error(`Errore nell'eliminazione delle task: ${rejectedDeletions.join(", ")}`)
+        }
+    }
+
     async function updateTask(updatedTask) {
         const response = await fetch(`${apiUrl}/tasks/${updatedTask.id}`, {
             method: "PUT",
@@ -58,7 +84,7 @@ function useTasks() {
     }
 
 
-    return { tasks, setTasks, addTask, removeTask, updateTask }
+    return { tasks, setTasks, addTask, removeTask, updateTask, removeMultipleTasks }
 }
 
 export default useTasks
