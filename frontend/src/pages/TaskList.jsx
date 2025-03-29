@@ -1,9 +1,19 @@
 //Contexts
 import GlobalContext from "../contexts/GlobalContext"
 //Hooks
-import { useContext, useMemo, useState } from "react"
+import { useCallback, useContext, useMemo, useState } from "react"
 //Components
 import TaskRow from "../components/TaskRow.jsx"
+
+function debounce(callback, delay) {
+    let timer
+    return (value) => {
+        clearTimeout(timer)
+        timer = setTimeout(() => {
+            callback(value)
+        }, delay)
+    }
+}
 
 
 function TaskList() {
@@ -12,6 +22,7 @@ function TaskList() {
     const [sortBy, setSortBy] = useState("createdAt")
     const [sortOrder, setSortOrder] = useState(1)
     const [query, setQuery] = useState("")
+    const debouncedSetQuery = useCallback(debounce(setQuery, 300), [])
 
     function handleSort(field) {
         if (sortBy === field) {
@@ -57,8 +68,7 @@ function TaskList() {
                     className="rounded-lg shadow-md py-1 px-2"
                     type="text"
                     placeholder="Cerca..."
-                    value={query}
-                    onChange={e => setQuery(e.target.value)} />
+                    onChange={e => debouncedSetQuery(e.target.value)} />
                 <table className="rounded-lg shadow-md">
                     <thead>
                         <tr>
