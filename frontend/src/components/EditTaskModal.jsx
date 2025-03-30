@@ -1,5 +1,8 @@
-import { useState, useRef } from "react"
+import { useState, useRef, useMemo } from "react"
 import Modal from "./Modal"
+
+const symbols = "!@#$%^&*()-_=+[]{}|;:'\",.<>?/`~"
+
 
 function EditTaskModal({ show, onClose, task = {}, onSave }) {
 
@@ -12,11 +15,25 @@ function EditTaskModal({ show, onClose, task = {}, onSave }) {
         setEditedTask(prev => ({ ...prev, [key]: e.target.value }))
     }
 
+    const validateTitle = useMemo(() => {
+        if (!title) {
+            return "Il campo non può essere vuoto"
+        }
+        if ([...title].some(char => symbols.includes(char))) {
+            return "Non può contenere simboli"
+        }
+    })
+
     function handleSubmit(e) {
         e.preventDefault()
 
+        if (validateTitle) {
+            return alert("Inserire i dati correttamente")
+        }
+
         onSave(editedTask)
     }
+
 
     return (
         <Modal
@@ -32,6 +49,7 @@ function EditTaskModal({ show, onClose, task = {}, onSave }) {
                             value={title}
                             onChange={(e) => handleEditedTask("title", e)}
                         />
+                        {validateTitle && <span style={{ color: "red" }}>{validateTitle}</span>}
                     </div>
                     <div>
                         <label htmlFor="description">Descrizione</label>

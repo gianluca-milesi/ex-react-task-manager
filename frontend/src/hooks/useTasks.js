@@ -1,10 +1,11 @@
-import { useState, useEffect } from "react"
+import { useEffect, useReducer } from "react"
+import taskReducer from "../reducers/taskReducer"
 const apiUrl = import.meta.env.VITE_API_URL
 
 
 function useTasks() {
 
-    const [tasks, setTasks] = useState([])
+    const [tasks, dispatchTasks] = useReducer(taskReducer, [])
 
     async function fetchTasks() {
         try {
@@ -13,7 +14,7 @@ function useTasks() {
                 throw new Error("Errore nel recupero dei dati")
             }
             const tasksData = await response.json()
-            setTasks(tasksData)
+            dispatchTasks({ type: "LOAD_TASKS", payload: tasksData })
         } catch (err) {
             console.error(err)
         }
@@ -38,7 +39,7 @@ function useTasks() {
         const { success, message, task } = await response.json()
         if (!success) throw new Error(message)
 
-        setTasks([...tasks, task])
+        dispatchTasks({ type: "ADD_TASK", payload: task })
     }
 
     async function removeTask(taskId) {
@@ -48,7 +49,7 @@ function useTasks() {
         const { success, message } = await response.json()
         if (!success) throw new Error(message)
 
-        setTasks(prev => prev.filter(t => t.id !== taskId))
+        dispatchTasks({ type: "REMOVE_TASK", payload: taskId })
     }
 
     async function removeMultipleTasks(taskIds) {
@@ -70,7 +71,7 @@ function useTasks() {
             }
         })
         if (fulfilledDeletions.length > 0) {
-            setTasks(prev => prev.filter(t => !fulfilledDeletions.includes(t.id)))
+            dispatchTasks({ type: "REMOVE_MULTIPLE_TASKS", payload: fulfilledDeletions })
         }
         if (rejectedDeletions.length > 0) {
             throw new Error(`Errore nell'eliminazione delle task: ${rejectedDeletions.join(", ")}`)
@@ -91,11 +92,11 @@ function useTasks() {
         const { success, message, task } = await response.json()
         if (!success) throw new Error(message)
 
-        setTasks(prev => prev.map(t => t.id === updatedTask.id ? task : t))
+        dispatchTasks({ type: "UPDATE_TASK", payload: task })
     }
 
 
-    return { tasks, setTasks, addTask, removeTask, updateTask, removeMultipleTasks }
+    return { tasks, addTask, removeTask, updateTask, removeMultipleTasks }
 }
 
 export default useTasks
