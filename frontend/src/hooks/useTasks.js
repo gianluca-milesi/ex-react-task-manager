@@ -23,7 +23,13 @@ function useTasks() {
         fetchTasks()
     }, [])
 
+
     async function addTask(newTask) {
+        const taskExists = tasks.some(t => t.title === newTask.title)
+        if (taskExists) {
+            throw new Error("Esiste già una task con questo nome")
+        }
+
         const response = await fetch(`${apiUrl}/tasks`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -72,6 +78,11 @@ function useTasks() {
     }
 
     async function updateTask(updatedTask) {
+        const taskExists = tasks.find(t => t.title === updatedTask.title)
+        if (taskExists && taskExists.id !== updatedTask.id) {
+            throw new Error("Esiste già una task con questo nome")
+        }
+
         const response = await fetch(`${apiUrl}/tasks/${updatedTask.id}`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },

@@ -4,6 +4,7 @@ import { useContext, useState } from "react"
 import BackButton from "../components/BackButton.jsx"
 import Modal from "../components/Modal.jsx"
 import EditTaskModal from "../components/EditTaskModal.jsx"
+import dayjs from "dayjs"
 
 
 function TaskDetail() {
@@ -60,7 +61,7 @@ function TaskDetail() {
                             <h3 className="text-xl font-bold text-center">{task.title}</h3>
                             <p><strong>Descrizione: </strong>{task.description}</p>
                             <p><strong>Stato: </strong><span className={`${statusColors[task.status]}`}>{task.status}</span></p>
-                            <p><strong>Data di creazione: </strong>{new Date(task.createdAt).toLocaleDateString()}</p>
+                            <p><strong>Data di creazione: </strong>{dayjs(task.createdAt).format("DD/MM/YYYY")}</p>
                             <div className="flex justify-center items-center gap-4">
                                 <button
                                     className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 cursor-pointer"

@@ -40,7 +40,7 @@ function AddTask() {
 
                 setTitle("")
                 descriptionRef.current.value = ""
-                statusRef.current.value = ""
+                statusRef.current.value = "To do"
             } catch (err) {
                 console.error(err)
                 alert(err.message)
