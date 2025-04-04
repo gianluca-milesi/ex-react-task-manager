@@ -20,7 +20,7 @@ function AddTask() {
         if ([...title].some(char => symbols.includes(char))) {
             return "Non può contenere simboli"
         }
-    })
+    }, [title])
 
     async function handleSubmit(e) {
         e.preventDefault()
